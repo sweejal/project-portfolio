@@ -74,8 +74,78 @@
     @media (min-width: 700px) { .project { grid-column: span 6; } }
     @media (min-width: 1000px) { .project { grid-column: span 4; } }
     .project h3 { margin: 0 0 6px; font-size: 18px; }
-    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
-    .tag { background: #fff; border: 1px solid #f0cfe0; color: var(--pink-600); padding: 4px 8px; border-radius: 999px; font-size: 12px; }
+/* Fun pastel tag pills + micro-interaction */
+.tags { gap: 8px; }
+
+.tag {
+  position: relative;
+  background: var(--tag-bg, #fff);
+  color: var(--tag-text, var(--pink-600));
+  border: 1px solid var(--tag-border, #f0cfe0);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 600;
+  box-shadow: 0 6px 14px var(--shadow);
+  transition: transform .12s ease, box-shadow .2s ease, background .3s ease;
+}
+
+.tag:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 10px 22px rgba(0,0,0,.12);
+}
+
+/* glossy sweep on hover */
+.tag::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,.55) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform .6s ease;
+  pointer-events: none;
+}
+.tag:hover::after { transform: translateX(120%); }
+
+/* Rotate a soft color palette so tags are varied */
+.tags .tag:nth-child(6n+1){ --tag-bg:#fff0f7; --tag-border:#f7c2df; --tag-text:#b71d69; }
+.tags .tag:nth-child(6n+2){ --tag-bg:#f0f9ff; --tag-border:#c4e7ff; --tag-text:#0b63a3; }
+.tags .tag:nth-child(6n+3){ --tag-bg:#f2fff3; --tag-border:#c7efcc; --tag-text:#1b7a2a; }
+.tags .tag:nth-child(6n+4){ --tag-bg:#fff8eb; --tag-border:#ffe0b3; --tag-text:#a25b00; }
+.tags .tag:nth-child(6n+5){ --tag-bg:#f5f0ff; --tag-border:#d8c7ff; --tag-text:#5a3ec8; }
+.tags .tag:nth-child(6n+6){ --tag-bg:#eefafa; --tag-border:#c7eded; --tag-text:#0d6b6b; }
+.tag:active {
+  transform: translateY(0) scale(.98);
+  box-shadow: 0 4px 10px rgba(0,0,0,.10);
+}
+/* Ensure wrapping + healthy row spacing */
+.tags {
+  display: flex;          /* in case it was overridden */
+  flex-wrap: wrap;        /* allow multiple rows */
+  column-gap: 10px;       /* horizontal spacing */
+  row-gap: 12px;          /* extra vertical spacing so hover lift won't collide */
+  align-items: flex-start; /* prevent vertical squeezing */
+}
+
+/* Tag pill tweaks to avoid collisions */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;         /* tighter line box = less accidental overlap */
+  padding: 6px 12px;
+  border-radius: 999px;
+  margin-block: 4px;      /* extra vertical cushion for hover animations */
+  position: relative;
+  z-index: 0;             /* create a stacking context */
+  white-space: nowrap;    /* optional: keep text on one line inside pill */
+}
+
+/* If you keep the hover animation, make it float above neighbors */
+.tag:hover {
+  transform: translateY(-2px) scale(1.02);
+  z-index: 2;             /* hovered tag sits above the row below */
+}
+
     .footer { margin: 36px 0 12px; color: var(--muted); font-size: 13px; text-align: center; }
 
     dialog::backdrop { background: rgba(0,0,0,0.35); }
@@ -140,6 +210,7 @@
       <a href="#about">About</a>
       <a href="#projects">Projects</a>
       <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
       <a href="#skills">Skills</a>
       <a href="#contact">Contact</a>
     </div>
@@ -289,6 +360,27 @@
       </div>
     </section>
 
+    <section id="courses" class="section">
+  <h2>Relevant Courses</h2>
+  <div class="card">
+    <div class="tags">
+      <span class="tag">Mechatronics</span>
+      <span class="tag">Physics</span>
+      <span class="tag">Thermal and Fluid Systems</span>
+      <span class="tag">Electrical Circuits</span>
+      <span class="tag">Statics</span>
+      <span class="tag">Materials Science</span>
+      <span class="tag">Linear Algebra</span>
+      <span class="tag">Intermediate Cybersecurity</span>
+      <span class="tag">Intro to Cybersecurity</span>
+      <span class="tag">Intro to Computer Science</span>
+      <span class="tag">Calculus II</span>
+      <span class="tag">Applied Statistics</span>
+    </div>
+  </div>
+</section>
+
+
     <section id="contact" class="section">
       <h2>Contact</h2>
       <div class="card">
@@ -354,7 +446,7 @@
         summary: "Automation tool that parses customer orders from Gmail, writes structured rows to Sheets, sorts by pickup day, and emails digests.",
         tags: ["Google Apps Script", "JavaScript", "Gmail", "Sheets", "NLP"],
         details: "Label filtering to cut API usage, fuzzy item matching, Monday/Friday sorting, Fulfilled checkbox, daily digests (Mon 12 PM, Fri 10 AM). ~80% time saved and 91.87% parsing accuracy.",
-        detailsLong: "Built end-to-end workflow in Apps Script: Gmail filters → parser → structured write to Sheets → sort by pickup day → daily digests. Added rate-limit guards and label scoping to reduce Gmail calls.",
+        detailsLong: "• Built end-to-end workflow in Apps Script: Gmail filters → parser → structured write to Sheets → sort by pickup day → daily digests <br> • Added rate-limit guards and label scoping to reduce Gmail calls",
         repo: "https://github.com/sweejal/Market-Bot",
         images: [
           { src:"assets/MarketBotEmail.png", alt:"How Market Bot sends email to the greenhouse team" },
@@ -455,8 +547,7 @@
   summary: "Disassembled, analyzed, and reimagined a toddler Bumpie Ball; proposed an animal-carousel redesign with added lights/music.",
   tags: ["Reverse Engineering", "Mechanisms", "Electronics", "Human Factors"],
   details: "",
-  detailsLong: "• Disassembled the Bumpie Ball toy into its motor, circuit board, batteries, and triangular shaft to understand how vibration and motion were generated through electro-mechanical interfaces <br>• Researched customer needs and design constraints, identifying shortcomings of existing versions (e.g., loud vibrations, difficult battery replacement, lack of visual appeal)<br>• Proposed and developed concepts for an improved design, selecting an animal-carousel prototype that reused the original motor housing and added LEDs and music for enhanced toddler engagement",
-  repo: "#",
+  detailsLong: "• Disassembled the Bumpie Ball toy into its motor, circuit board, batteries, and triangular shaft to understand how vibration and motion were generated through electro-mechanical interfaces <br>• Researched customer needs and design constraints, identifying shortcomings of existing versions (e.g., loud vibrations, difficult battery replacement, lack of visual appeal)<br>• Proposed and developed concepts for an improved design, selecting an animal-carousel prototype that reused the original motor housing and added LEDs and music for enhanced toddler engagement",repo: "#",
   images: [
     { src:"assets/Bumpie ball.png", alt:"Original Bumpie Ball exterior" },
     { src:"assets/Bumpie ball parts.png", alt:"Internal components after teardown" },
@@ -497,7 +588,7 @@
         summary: "Evidence-based review of PEDOT, nano-mesh, and carbon structures for neural interfaces.",
         tags: ["Research", "Materials", "Bioethics"],
         details: "Focus on electrochemical transduction, mechanical compliance, long-term biostability, fabrication, and ethics.",
-        detailsLong: "Compared PEDOT vs. graphene vs. nano-mESH on impedance, charge injection, and chronic stability; discussed ethical frameworks.",
+        detailsLong: "• Compared PEDOT vs. graphene vs. nano-mESH on impedance, charge injection, and chronic stability; discussed ethical frameworks",
         repo: "#",
         images: [],
         videos: [],
@@ -734,3 +825,4 @@
   </script>
 </body>
 </html>
+
