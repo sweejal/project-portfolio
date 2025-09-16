@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sweejal Kafle • Portfolio</title>
+  <meta name="description" content="Projects, research, and tutoring by Sweejal Kafle — Engineering & Mathematics at Sweet Briar College" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png"/>
+  <style>
+    :root {
+      --bg: #fff7fb;
+      --pink: #ff4da6;
+      --pink-600: #e2338e;
+      --text: #121212;
+      --muted: #666;
+      --card: #ffffff;
+      --ring: rgba(255, 77, 166, 0.35);
+      --shadow: rgba(0,0,0,0.08);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji"; color: var(--text); background: var(--bg); }
+    a { color: var(--pink-600); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .container { max-width: 1100px; padding: 24px; margin: 0 auto; }
+    header { display: grid; grid-template-columns: auto 1fr; gap: 24px; align-items: center; padding: 28px 0 8px; }
+    .avatar { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; border: 4px solid #fff; box-shadow: 0 8px 24px var(--shadow); background: #eee; }
+    .title { margin: 0; font-size: clamp(28px, 4vw, 38px); line-height: 1.1; }
+    .subtitle { margin: 8px 0 0; color: var(--muted); font-size: 15px; }
+    nav { position: sticky; top: 0; background: rgba(255,247,251,0.8); backdrop-filter: blur(6px); border-bottom: 1px solid #f2e3ed; z-index: 5; }
+    nav .navwrap { max-width: 1100px; margin: 0 auto; padding: 10px 24px; display: flex; gap: 12px; flex-wrap: wrap; }
+    nav a { padding: 8px 12px; border-radius: 999px; border: 1px solid #f3d3e4; background: white; }
+    nav a:hover { box-shadow: 0 6px 16px var(--shadow); text-decoration: none; }
+    .buttons { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+    .btn { appearance: none; border: none; padding: 12px 16px; border-radius: 999px; font-weight: 600; cursor: pointer; transition: transform .08s ease, box-shadow .2s ease, background .2s ease; font-size: 14px; }
+    .btn:focus-visible { outline: 3px solid var(--ring); outline-offset: 2px; }
+    .btn.primary { background: var(--pink); color: white; box-shadow: 0 6px 16px var(--ring); }
+    .btn.primary:hover { background: var(--pink-600); }
+    .btn.white { background: white; color: var(--text); border: 1px solid #eee; }
+    .btn.white:hover { box-shadow: 0 6px 16px var(--shadow); }
+
+    /* Modal action buttons */
+    .btn.link {
+      background: #22c55e;
+      color: #fff;
+      font-size: 14px;
+      padding: 10px 14px;
+      width: fit-content;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn.link:hover { background: #16a34a; }
+    .btn.link:focus-visible { outline: 3px solid rgba(34,197,94,.35); outline-offset: 2px; }
+
+    .btn.repo {
+      background: #24292f;
+      color: #fff;
+      font-size: 14px;
+      padding: 10px 14px;
+      width: fit-content;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn.repo:hover { background: #1f2328; }
+    .btn.repo:focus-visible { outline: 3px solid rgba(36,41,47,.35); outline-offset: 2px; }
+    .btn .icon { width: 18px; height: 18px; display: inline-block; }
+
+    .section { margin-top: 28px; }
+    .section h2 { font-size: 22px; margin: 0 0 12px; }
+    .card { background: var(--card); border: 1px solid #f1f1f1; border-radius: 16px; padding: 16px; box-shadow: 0 10px 24px var(--shadow); }
+    .projects { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
+    .project { grid-column: span 12; }
+    @media (min-width: 700px) { .project { grid-column: span 6; } }
+    @media (min-width: 1000px) { .project { grid-column: span 4; } }
+    .project h3 { margin: 0 0 6px; font-size: 18px; }
+/* Fun pastel tag pills + micro-interaction */
+.tags { gap: 8px; }
+
+.tag {
+  position: relative;
+  background: var(--tag-bg, #fff);
+  color: var(--tag-text, var(--pink-600));
+  border: 1px solid var(--tag-border, #f0cfe0);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 600;
+  box-shadow: 0 6px 14px var(--shadow);
+  transition: transform .12s ease, box-shadow .2s ease, background .3s ease;
+}
+
+.tag:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 10px 22px rgba(0,0,0,.12);
+}
+
+/* glossy sweep on hover */
+.tag::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,.55) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform .6s ease;
+  pointer-events: none;
+}
+.tag:hover::after { transform: translateX(120%); }
+
+/* Rotate a soft color palette so tags are varied */
+.tags .tag:nth-child(6n+1){ --tag-bg:#fff0f7; --tag-border:#f7c2df; --tag-text:#b71d69; }
+.tags .tag:nth-child(6n+2){ --tag-bg:#f0f9ff; --tag-border:#c4e7ff; --tag-text:#0b63a3; }
+.tags .tag:nth-child(6n+3){ --tag-bg:#f2fff3; --tag-border:#c7efcc; --tag-text:#1b7a2a; }
+.tags .tag:nth-child(6n+4){ --tag-bg:#fff8eb; --tag-border:#ffe0b3; --tag-text:#a25b00; }
+.tags .tag:nth-child(6n+5){ --tag-bg:#f5f0ff; --tag-border:#d8c7ff; --tag-text:#5a3ec8; }
+.tags .tag:nth-child(6n+6){ --tag-bg:#eefafa; --tag-border:#c7eded; --tag-text:#0d6b6b; }
+.tag:active {
+  transform: translateY(0) scale(.98);
+  box-shadow: 0 4px 10px rgba(0,0,0,.10);
+}
+/* Ensure wrapping + healthy row spacing */
+.tags {
+  display: flex;          /* in case it was overridden */
+  flex-wrap: wrap;        /* allow multiple rows */
+  column-gap: 10px;       /* horizontal spacing */
+  row-gap: 12px;          /* extra vertical spacing so hover lift won't collide */
+  align-items: flex-start; /* prevent vertical squeezing */
+}
+
+/* Tag pill tweaks to avoid collisions */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;         /* tighter line box = less accidental overlap */
+  padding: 6px 12px;
+  border-radius: 999px;
+  margin-block: 4px;      /* extra vertical cushion for hover animations */
+  position: relative;
+  z-index: 0;             /* create a stacking context */
+  white-space: nowrap;    /* optional: keep text on one line inside pill */
+}
+
+/* If you keep the hover animation, make it float above neighbors */
+.tag:hover {
+  transform: translateY(-2px) scale(1.02);
+  z-index: 2;             /* hovered tag sits above the row below */
+}
+
+    .footer { margin: 36px 0 12px; color: var(--muted); font-size: 13px; text-align: center; }
+
+    dialog::backdrop { background: rgba(0,0,0,0.35); }
+    dialog { border: none; border-radius: 16px; padding: 0; width: min(780px, calc(100vw - 32px)); box-shadow: 0 30px 70px rgba(0,0,0,.25); overflow: auto; }
+    .modal-head { display:flex; align-items:center; justify-content: space-between; padding: 16px; background: var(--card); border-bottom: 1px solid #f2f2f2; }
+    .modal-body { 
+  width: 100%; /* Sets width to 80% of its parent container */
+  height: auto; /* Allows height to adjust based on content */
+  max-height: 70vh; /* Limits maximum height to 70% of viewport height */
+  overflow-y: auto; padding: 16px; background: #fff; display: grid; gap: 14px; }
+    .close { background: transparent; border: none; font-size: 22px; cursor: pointer; padding: 4px 8px; }
+
+    /* Actions row inside modal: keep Report/Slides/Source code on one line (wrap if needed) */
+    .modal-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-top: 16px;
+    }
+
+    /* Experience timeline (each entry as a white card) */
+    .timeline { display: grid; gap: 12px; }
+    .item { background: #fff; border: 1px solid #f3e1eb; border-radius: 16px; padding: 12px; box-shadow: 0 10px 24px var(--shadow); display: grid; gap: 6px; }
+    .item .role { font-weight: 700; }
+    .item .meta { color: var(--muted); font-size: 13px; }
+
+    /* Thumbnails row for media */
+    .media-row { display:flex; gap:8px; overflow-x:auto; padding-bottom:4px; }
+    .media-row::-webkit-scrollbar { height: 8px; }
+    .media-row::-webkit-scrollbar-thumb { background: #e9d1de; border-radius: 999px; }
+    .thumb { flex:0 0 auto; width:200px; height:112px; border-radius:10px; border:1px solid #f2f2f2; box-shadow:0 6px 12px var(--shadow); object-fit:cover; background:#fff; }
+
+    /* Small button for inline actions */
+    .btn.sm {
+      padding: 8px 10px;
+      font-size: 12px;
+      border-radius: 999px;
+      border: 1px solid #eee;
+      background: white;
+      cursor: pointer;
+    }
+    .btn.sm:hover { box-shadow: 0 6px 16px var(--shadow); }
+
+    /* Layout for a video thumb + button */
+    .video-thumb { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 8px; }
+
+    /* Fullscreen image viewer */
+    #imageViewer::backdrop { background: rgba(0,0,0,0.85); }
+    #imageViewer { border:none; padding:0; width:100vw; height:100vh; max-width:none; max-height:none; background:transparent; }
+    .viewer-wrap { position:fixed; inset:0; display:grid; place-items:center; user-select:none; overflow:hidden; cursor:zoom-out; }
+    .viewer-img { max-width:95vw; max-height:95vh; transform-origin:center center; will-change:transform; }
+
+    /* Video viewer dialog */
+    #videoViewer::backdrop { background: rgba(0,0,0,0.6); }
+    #videoViewer { border:none; padding:0; width:min(1000px, calc(100vw - 32px)); background:#000; }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="navwrap">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#courses">Courses</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <header>
+      <img class="avatar" src="assets/headshot.jpg" alt="Portrait of Sweejal Kafle" />
+      <div>
+        <h1 class="title">Sweejal Kafle</h1>
+        <p class="subtitle">Senior Engineering Science & Mathematics student at Sweet Briar. Looking for new-grad roles!</p>
+        <div class="buttons">
+          <a class="btn primary" href="#projects">See Projects</a>
+          <a class="btn white" href="#contact">Contact</a>
+          <a class="btn white" href="#about">About</a>
+        </div>
+      </div>
+    </header>
+
+    <section id="about" class="section">
+      <h2>About</h2>
+      <div class="card">
+        <p>
+          Hello, my name is Sweejal Kafle and I am a senior at Sweet Briar College studying Engineering Science and Mathematics. I love tackling challenges that make me think in new ways, whether it is problem solving, research, or exploring how technology and sustainability can create meaningful change. Outside the classroom, you can usually find me leading or collaborating with my amazing peers through Women in Tech, Society of Women Engineers, Multicultural Communities Council, Google Developer Student Club, and Girls Who Code. Being an RA on campus (my third year now) has also given me the chance to connect with people on a more personal level, building community while learning just as much from others as they do from me. I thrive on curiosity, creativity, and collaboration, and I enjoy bringing a spirit of inclusivity and excitement into every project I work on.
+        </p>
+      </div>
+    </section>
+
+    <section id="projects" class="section">
+      <h2>Projects</h2>
+      <div id="projectsGrid" class="projects"></div>
+    </section>
+
+    <section id="experience" class="section">
+      <h2>Experience</h2>
+      <div class="timeline">
+        <div class="item">
+          <div class="role">Fall Engineering Extern • City of Lynchburg Water Resources</div>
+          <div class="meta">Aug 2025 – Present</div>
+          <div>
+            <ul>
+              <li>Support municipal engineers with BMP inspections, illicit discharge investigations, and stream monitoring to maintain MS4 permit compliance</li>
+              <li>Conduct GIS mapping and water quality data analysis, contributing to infrastructure planning and compliance reporting</li>
+              <li>Gain practical exposure to stormwater systems, permitting processes, and community education programs through site visits</li>
+            </ul>
+          </div>
+        </div>
+        <div class="item">
+          <div class="role">Engineering Intern • Willits Fellowship • Sweet Briar College Greenhouse</div>
+          <div class="meta">May 2025 – Aug 2025</div>
+          <div>
+            <ul>
+              <li>Designed and deployed Market Bot automation tool through Google Apps Script with 91.87% accuracy, reducing order processing time by 80%</li>
+              <li>Diagnosed and repaired A-frame hydroponics system, improving water flow reliability and crop yield consistency</li>
+              <li>Upgraded solar-powered golf cart system, increasing current from 0.5A to 4.5A and voltage from 36V to 42V, raising conversion efficiency from 10.25% to 83.7%</li>
+              <li>Applied engineering design principles to integrate automation and system optimization into sustainability workflows</li>
+            </ul>
+          </div>
+        </div>
+        <div class="item">
+          <div class="role">Research Assistant • Sweet Briar College</div>
+          <div class="meta">Sep 2024 – Present</div>
+          <div>
+            <ul>
+              <li>Synthesized insights from 20+ peer-reviewed studies to assess next-gen neural interface materials including PEDOT, nano-meshes, and carbon nanostructures</li>
+              <li>Investigated electrochemical transduction, mechanical compliance, and long-term biostability for chronic implantation</li>
+              <li>Explored micro/nanoscale fabrication and deposition techniques for flexible, tissue-conformal electrode systems</li>
+              <li>Analyzed bioethical dimensions of invasive neural technologies, focusing on consent, identity, and long-term risk</li>
+            </ul>
+          </div>
+        </div>
+        <div class="item">
+          <div class="role">Engineering Tutor • Sweet Briar College</div>
+          <div class="meta">Sep 2024 – Present</div>
+          <div>
+            <ul>
+              <li>Tutor 20+ students in Physics I, II, and Electrical Circuits in topics like kinematics, electromagnetism, control systems, and circuit analysis</li>
+              <li>Support hands-on lab work, including circuit assembly, sensor integration, and data interpretation to bridge theory and application</li>
+            </ul>
+          </div>
+        </div>
+        <div class="item">
+          <div class="role">Computer Engineering Instructor & RA • EXPLO</div>
+          <div class="meta">Jun 2024 – Aug 2024</div>
+          <div>
+            <ul>
+              <li>Taught Python programming (arrays, algorithms, OOP) to 30+ high school students, designing project-based learning modules</li>
+              <li>Led the development of hands-on coding projects, fostering computational thinking and problem-solving skills</li>
+              <li>Supervised 40+ residential students and coordinated trips for 150+ participants, ensuring safety and engagement</li>
+            </ul>
+          </div>
+        </div>
+        <div class="item">
+          <div class="role">Industrial Engineering Extern • Lockheed Martin</div>
+          <div class="meta">Nov 2023 – Feb 2024</div>
+          <div>
+            <ul>
+              <li>Mentored directly by industrial engineers at Lockheed Martin, gaining direct insight into real-world applications of systems optimization, operations research, and process improvement</li>
+              <li>Collaborated with engineering professionals to explore aerospace case studies, receive personalized career guidance, and develop strategies for navigating technical roles in industry</li>
+            </ul>
+          </div>
+        </div>
+        <div class="item">
+          <div class="role">Residential Advisor • Sweet Briar College</div>
+          <div class="meta">Aug 2023 – Present</div>
+          <div>
+            <ul>
+              <li>Oversee 16 residents, serve as their first point of contact for academic, personal, or campus-related concerns</li>
+              <li>Coordinated and facilitated 10+ emergency drills in hall building, ensuring residents’ safety and well-being</li>
+              <li>Trained in Fire Safety, Suicide Prevention, Conflict Resolution, Diversity and Inclusion, First Aid, CPR, Mental Health Awareness, and Confidentiality Reporting for Title IX and Incident Reports</li>
+            </ul>
+          </div>
+        </div>
+        <div class="item">
+          <div class="role">Technology Services Student Assistant • Sweet Briar College</div>
+          <div class="meta">Mar 2023 – Aug 2024</div>
+          <div>
+            <ul>
+              <li>Provided technical support for Microsoft 365, Zoom, Canvas, software installations, and college system access, leveraging tools like Cisco Meraki and SolarWinds for network monitoring and device management</li>
+              <li>Re-imaged 60+ laptops using centralized deployment tools, audited years of user files, and ensured secure configurations with updated antivirus and optimized network settings</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" class="section">
+      <h2>Skills</h2>
+      <div class="card">
+        <div class="tags">
+          <span class="tag">Linux</span>
+          <span class="tag">Python</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">Arduino</span>
+          <span class="tag">AutoCAD</span>
+          <span class="tag">Autodesk Inventor</span>
+          <span class="tag">MATLAB</span>
+          <span class="tag">ArcGIS</span>
+          <span class="tag">Metasploit</span>
+          <span class="tag">Circuit Design</span>
+          <span class="tag">Canva</span>
+          <span class="tag">Microsoft Office</span>
+          <span class="tag">Google Suite</span>
+          <span class="tag">Communication</span>
+          <span class="tag">Leadership</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="courses" class="section">
+  <h2>Relevant Courses</h2>
+  <div class="card">
+    <div class="tags">
+      <span class="tag">Mechatronics</span>
+      <span class="tag">Physics</span>
+      <span class="tag">Thermal and Fluid Systems</span>
+      <span class="tag">Electrical Circuits</span>
+      <span class="tag">Statics</span>
+      <span class="tag">Materials Science</span>
+      <span class="tag">Linear Algebra</span>
+      <span class="tag">Intermediate Cybersecurity</span>
+      <span class="tag">Intro to Cybersecurity</span>
+      <span class="tag">Intro to Computer Science</span>
+      <span class="tag">Calculus II</span>
+      <span class="tag">Applied Statistics</span>
+    </div>
+  </div>
+</section>
+
+
+    <section id="contact" class="section">
+      <h2>Contact</h2>
+      <div class="card">
+        <p>Reach out: <a href="mailto:sweejal.kafle@gmail.com">sweejal.kafle@gmail.com</a> • <a href="tel:+14342914624">+1 (434) 291-4624</a> • <a href="https://www.linkedin.com/in/sweejal/" target="_blank" rel="noreferrer">LinkedIn</a></p>
+        <form onsubmit="event.preventDefault(); alert('Thanks! I\'ll be in touch.');" style="margin-top:12px; display:grid; gap:8px; grid-template-columns: 1fr 1fr;">
+          <input aria-label="Name" placeholder="Your name" required style="padding:10px; border-radius:10px; border:1px solid #eee; grid-column: span 1;">
+          <input aria-label="Email" type="email" placeholder="Your email" required style="padding:10px; border-radius:10px; border:1px solid #eee; grid-column: span 1;">
+          <textarea aria-label="Message" placeholder="How can I help?" required style="padding:10px; border-radius:10px; border:1px solid #eee; grid-column: span 2; min-height: 90px;"></textarea>
+          <button class="btn primary" type="submit" style="grid-column: span 2; width: fit-content;">Send message</button>
+        </form>
+      </div>
+    </section>
+
+    <p class="footer">© <span id="year"></span> Sweejal Kafle</p>
+  </div>
+
+  <!-- Project modal -->
+  <dialog id="projectModal" aria-labelledby="modalTitle">
+    <div class="modal-head">
+      <h3 id="modalTitle" style="margin:0"></h3>
+      <button class="close" aria-label="Close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div id="modalDesc"></div>
+
+      <div>
+        <strong>Project Media</strong>
+        <div id="modalMedia" class="media-row" style="margin-top:8px;"></div>
+      </div>
+
+      <!-- Actions in one line (wraps if needed): Report, Slides, Source code -->
+      <div id="modalLinks" class="modal-actions"></div>
+    </div>
+  </dialog>
+
+  <!-- Fullscreen image viewer -->
+  <dialog id="imageViewer" aria-label="Image viewer">
+    <div class="viewer-wrap" id="viewerWrap">
+      <img id="viewerImg" class="viewer-img" alt="">
+    </div>
+  </dialog>
+
+  <!-- Video viewer dialog -->
+  <dialog id="videoViewer" aria-label="Video viewer">
+    <div class="modal-head">
+      <h3 id="videoTitle" style="margin:0"></h3>
+      <div style="display:flex; gap:8px; align-items:center">
+        <button class="btn sm" onclick="fsVideo()">Fullscreen</button>
+        <button class="close" aria-label="Close" onclick="closeVideo()">×</button>
+      </div>
+    </div>
+    <div class="modal-body" style="padding:0; background:#000">
+      <video id="viewerVideo" controls playsinline style="width:100%; height:auto; display:block; background:#000"></video>
+    </div>
+  </dialog>
+
+  <script>
+    // ===== Projects data (use links[] for reports/slides; repo for GitHub) =====
+    const projects = [
+    {
+        id: "BWXT",
+        title: "Capstone Project: High Temperature Pipe Coupling in High Temperature Gas Reactor Applications",
+        summary: "3D CAD Model of a high temperature coupling for use in HTGR to manage piping thermal growth",
+        tags: ["AutoCAD", "Nuclear Reactors", "Fluid Mechanics", "ANSI", "Stress Analysis"],
+        details: "",
+        detailsLong: "Background: The transport and use of high temperature gases, such as those used in power generation facilities, generate large stresses in piping systems due to the thermal growth of the piping materials. This thermal growth often manifests in creating expansion loops in the piping systems to allow for system flexibility and reduced stresses or the introduction of flexible bellows to absorb the growth. Both expansion loops and bellows drive system losses in pressure negatively affecting the efficiency, adding significant cost and complexity. In the case of bellows, they have a limited life and can generate significant thrust loads due to the construction and internal pressure. With the desire to develop portable or transportable micro-nuclear reactors, there is a strong desire to have methods to reduce piping lengths and pressure losses so new method of managing piping thermal growth is desired.<br> <br>Project Objective: Create aconceptual design of a high temperature coupling for use in high temperature gas reactor (HTGR) applications. This coupling would allow for inches of axial thermal growth for an 8-10 NPS commercial stainless-steel pipe.",        repo: "",
+        images: [
+          { src: "assets/BWXT Summary Slide.png", alt:"Description of the project" }
+        ],
+        videos: [],
+        links: []
+      },
+      {
+        id: "market-bot",
+        title: "Market Bot (Gmail → Sheets)",
+        summary: "Automation tool that parses customer orders from Gmail, writes structured rows to Sheets, sorts by pickup day, and emails digests.",
+        tags: ["Google Apps Script", "JavaScript", "Gmail", "Sheets", "NLP"],
+        details: "Label filtering to cut API usage, fuzzy item matching, Monday/Friday sorting, Fulfilled checkbox, daily digests (Mon 12 PM, Fri 10 AM). ~80% time saved and 91.87% parsing accuracy.",
+        detailsLong: "• Built end-to-end workflow in Apps Script: Gmail filters → parser → structured write to Sheets → sort by pickup day → daily digests <br> • Added rate-limit guards and label scoping to reduce Gmail calls",
+        repo: "https://github.com/sweejal/Market-Bot",
+        images: [
+          { src:"assets/MarketBotEmail.png", alt:"How Market Bot sends email to the greenhouse team" },
+          { src:"assets/Google Sheets Workspace.png", alt:"Where all the orders are parsed" },
+          { src:"assets/Google Apps Script.png", alt:"Part of the code" }
+        ],
+        videos: [],
+        links: []
+      },
+      {
+        id: "solar-cart",
+        title: "Solar-Powered Golf Cart Optimization",
+        summary: "Improved current from 0.5A to 4.5A and voltage from 36V to 42V by redesigning the power path and controller.",
+        tags: ["Power", "Solar", "Charge Controller", "Efficiency"],
+        details: "Raised conversion efficiency from 10.25% to 83.7% through hardware upgrades and wiring improvements.",
+        detailsLong: "• Led a project to enhance the efficiency of solar panels in a sustainable golf cart, addressing operational limitations and achieving a significant increase in current flow from 0.5 A to 4.5 A and voltage from 36V to 42V through the installation of a new charge controller<br> • Conducted thorough customer interviews and technical assessments to identify issues and generate practical solutions, leading to an 83.7% efficiency rate in solar power conversion, up from 10.25%",
+        repo: "#",
+        images: [
+          { src:"assets/golfcart.jpg", alt:"Upgraded solar golf cart" }, 
+          { src:"assets/New Charge Controller.png", alt:"New charge controller" },
+          { src:"assets/Fully charged controller.png", alt:"Battery charge reached 100% after adding the new charge controller and letting it stay in the sun for 15 minutes" },
+          { src:"assets/Battery Corrosion Neutralized.png", alt:"Battery corrosion neutralized using baking soda" }
+        ],
+        videos: [],
+        links: [
+          { label: "Project Report", href:"https://docs.google.com/document/d/e/2PACX-1vSgPA2boi5ejGmyK3IYoTmUfZxsHSdfSoC3swktl3pnlqyixKCQeqQ1wcdLr8Kgbw/pub" },
+          { label: "Project Presentation", href:"https://docs.google.com/presentation/d/e/2PACX-1vRrjh03BoRf9FTNJyhYB5wC_OnYZCazL5yYIcyKJ8g99pJH0xq9YaauOLpBWLqVfvehFFNrk1h6XrLD/pub?start=false&loop=false&delayms=5000" },
+          { label:"Project User Manual", href:"https://docs.google.com/document/d/e/2PACX-1vR5Fd38KRQW_pritMygwO06b4QYqiFbtN138QPdetEevx2r4L8Vot9MhjGujpFxDbsrmqFeGPkLDqNx/pub" }
+        ]
+      },
+      
+      {
+        id: "ble-rc",
+        title: "Remote Control Car (BLE)",
+        summary: "3D modeled and programmed a BLE RC car with real-time speed control and mode switching.",
+        tags: ["Arduino", "Adafruit BLE", "Mechatronics"],
+        details: "Supports line-following and user-directed control via mobile device.",
+        detailsLong: "• 3D modeled and programmed a remote-controlled car using Adafruit BLE module, incorporating motor control and Bluetooth connectivity for navigation via any mobile device <br> • Applied mechatronics principle to design the fully-functioning car capable of real-time speed modulation and the ability to toggle between line following and user-based directional control mode",
+        repo: "https://github.com/sweejal/Remote-Control-Car-BLE-",
+        images: [ { src:"assets/RC Car1.png", alt:"RC Car" }, { src:"assets/RC Car.png", alt:"RC Car" } ],
+        videos: [
+{ embed:"https://drive.google.com/file/d/1d6ePoaaeBLdzV3Q1Gky19x-RBFRQnN4Y/preview", title:"RC Car (Drive Preview)" }
+        ],
+        links: [
+          { label: "Project Report", href:"assets/RC Car.pdf" },
+          {label:"Project Presentation", href:"https://rccar.my.canva.site/"},
+          { label:"Project User Manual", href:"https://docs.google.com/document/d/e/2PACX-1vT_f9nUSywARfpH8Q7-aiP4oHAUiaIhYC04WZkOBzER0TRIZosCtJCW8jQIXT4nUmDFBapnTH2ovTue/pub" }
+      ]
+      },
+      {
+  id: "floating-arm-trebuchet",
+  title: "Floating Arm Trebuchet (Class Champion)",
+  summary: "Launched a grapefruit 150 ft with <8% prediction error; led design on projectile cradle, counterweight, and wheel geometry.",
+  tags: ["Mechanics", "Kinematics", "Dynamics", "Prototyping"],
+  details: "Built and tuned a floating arm trebuchet; earned top marks for construction accuracy and predictive modeling.",
+  detailsLong: "• Led design decisions on projectile holder, counterweight mechanism, and wheel placement for a floating arm trebuchet built from engineering plans<br> • Applied physics-based calculations and iterative testing to predict launch distance with less than 8% error, validating the model against field data<br> • Achieved a 150-ft grapefruit launch—the farthest in the class—through precise mass distribution, axle alignment, and release-angle tuning<br> • Documented procedures and results with diagrams and data tables to support troubleshooting and reproducibility",
+  repo: "#",
+  images: [
+    { src: "assets/trebuchet_1.jpg", alt: "Floating arm trebuchet build" },
+    { src: "assets/trebuchet_2.jpg", alt: "Counterweight and wheel assembly" },
+    { src: "assets/trebuchet_3.jpg", alt: "Range test on field" }
+  ]
+},
+{
+  id: "custom-lego",
+  title: "Custom LEGO-Compatible Parts",
+  summary: "Modeled in Autodesk Inventor, 3D-printed prototypes, and optimized for durable, precise interlocks.",
+  tags: ["CAD", "3D Printing", "Design", "Manufacturing"],
+  details: "Designed LEGO-compatible components with tight fit and high wear resistance; refined via rapid iteration.",
+  detailsLong: "• Designed custom LEGO-compatible pieces in Autodesk Inventor, translating parametric sketches into manufacturable 3D models<br> • 3D-printed and iterated prototypes to improve snap-fit tolerances and clutch power while maintaining smooth assembly<br> • Optimized wall thickness, fillet radii, and stud geometry for durability and repeatable fit across multiple prints<br> • Evaluated wear over repeated assembly cycles and updated models for consistent dimensional accuracy",
+  repo: "#",
+  images: [
+    { src: "assets/lego_cad.png", alt: "Autodesk Inventor model of custom LEGO piece" },
+    { src: "assets/lego_print.jpg", alt: "3D-printed LEGO-compatible prototypes" }
+  ]
+},
+      {
+        id: "light-bot",
+        title: "Light-Seeking Robot",
+        summary: "Autonomous robot that navigates toward light using photoresistors and H-bridge control.",
+        tags: ["Arduino", "Control", "Robotics"],
+        details: "Dynamic speed and direction based on measured intensity; demonstrates electronics and programming skills.",
+        detailsLong: "• Utilized Arduino programming and an H-bridge circuit with photoresistors to create a robot capable of autonomously navigating toward light sources, enhancing hands-on engineering skills <br> • Developed a control system that allowed for dynamic speed adjustments and directional changes based on light intensity, demonstrating proficiency in electronics and programming",
+        repo: "https://github.com/sweejal/Light-Seeking-Robot-using-Arduino",
+        images: [
+          { src:"assets/Fully-assembled Light Seeking Robot.png", alt:"Light-seeking robot" },
+          { src:"assets/Light Seeking Robot Circuitry.png", alt:"Circuitry" },
+          { src:"assets/CAD Circuitry.png", alt:"Circuitry CAD" }
+        ],
+        videos: [
+          {embed:"https://drive.google.com/file/d/1wMNv5ufV_OErZ0DxA0FfO1e_uzxXR-9R/preview", title:"Light-Bot Demo (Drive)" }
+
+        ],
+        links: [
+          { label: "Project Report", href:"https://drive.google.com/file/d/11AGt5V0Apam5KrozWvPTHlOrbMRpJ9Jw/view?usp=drive_link" },
+          {label:"Project Presentation", href:"https://docs.google.com/presentation/d/e/2PACX-1vRKFH-TdLoBY2FxQhTTIGFtjTbEFvBQE6d5uRLr1AD7dx6kE1iToW7l6RaS7azp30Kq8f2Dp5HkTnbq/pub?start=false&loop=false&delayms=3000"}
+
+        ]
+      },
+      {
+        id: "led-clock",
+        title: "Analog LED Clock",
+        summary: "Laser-cut clock with LEDs synchronized via DS3231 RTC and Arduino.",
+        tags: ["Autodesk Inventor", "Laser Cutting", "Arduino"],
+        details: "Acrylic and wood construction; theme inspired by Subway Surfers; precise fit and assembly.",
+        detailsLong: "• Designed and built an analog LED clock using Autodesk Inventor for 3D modeling, CNC laser cutting for manufacturing, and Arduino programming to synchronize LED illumination with analog clock <br>• Used acrylic and wood to construct the clock, inspired by the Subway Surfers mobile game, enhancing both aesthetic appeal and technical functionality <br>• Ensured precise timekeeping with an RTC DS3231 module and achieved accurate fitting of LEDs and clock hands, demonstrating skills in circuit design and assembly",
+        repo: "#",
+        images: [{ src:"assets/Analog LED clock.png", alt:"Analog LED clock" },{src:"assets/Image diagram.png", alt:"Detailed diagram" }],
+        videos: [],
+        links: [{label:"Project Report", href:"https://docs.google.com/document/d/e/2PACX-1vTMUvEOzf1kqiIYfd6waO389FWRfDIbEu3ZSxI1ghx2MejGfGuO21R_n7vsawIWVk9KMgcyreuJvBm1/pub"}],
+      },
+    {        id: "a-frame",
+        title: "A-Frame Hydroponics Monitor",
+        summary: "Sensors and notifications for flow and pressure anomalies in greenhouse hydroponics.",
+        tags: ["Arduino", "Sensors", "IoT", "Sustainability"],
+        details: "Designed sensor array and alert logic to maintain stable irrigation and improve yield consistency.",
+        detailsLong: "• Designed a sensor network to track water flow rate and pressure in the A-frame hydroponics system <br>• Implemented Arduino-based monitoring with real-time alerts for anomalies <br>• Improved irrigation stability, preventing dry zones and reducing crop loss <br>• Developed custom threshold tuning logic to adapt to seasonal water demands <br>• Enhanced system reliability, resulting in more consistent crop yield",
+        repo: "#",
+        images: [],
+        videos: [],
+        links: []
+      },
+{
+  id: "bumpie-ball",
+  title: "Reverse Engineering a Bumpie Ball",
+  summary: "Disassembled, analyzed, and reimagined a toddler Bumpie Ball; proposed an animal-carousel redesign with added lights/music.",
+  tags: ["Reverse Engineering", "Mechanisms", "Electronics", "Human Factors"],
+  details: "",
+  detailsLong: "• Disassembled the Bumpie Ball toy into its motor, circuit board, batteries, and triangular shaft to understand how vibration and motion were generated through electro-mechanical interfaces <br>• Researched customer needs and design constraints, identifying shortcomings of existing versions (e.g., loud vibrations, difficult battery replacement, lack of visual appeal)<br>• Proposed and developed concepts for an improved design, selecting an animal-carousel prototype that reused the original motor housing and added LEDs and music for enhanced toddler engagement",repo: "#",
+  images: [
+    { src:"assets/Bumpie ball.png", alt:"Original Bumpie Ball exterior" },
+    { src:"assets/Bumpie ball parts.png", alt:"Internal components after teardown" },
+    { src:"assets/Bumpie ball re-engineered.png", alt:"Reverse engineered mini carousel" },
+  ],
+  videos: [
+  ],
+  links: []
+},
+
+      {
+        id: "pinball",
+        title: "Pinball Machine (Solar System)",
+        summary: "Mechanical pinball with flippers, springs, and Arduino-coded music with LED sync.",
+        tags: ["Mechanisms", "Arduino", "Fabrication"],
+        details: "Demonstrates mechanical design and embedded control to elevate gameplay.",
+        detailsLong: "• Designed and built a Solar System-themed pinball machine with flippers, motors, levers, and compression spring mechanisms to create dynamic gameplay functionality <br> • Programmed Arduino to control in-game music and synchronize four LEDs with sound, showcasing hardware–software integration and interactive coding skills",
+        repo: "#",
+        images: [],
+        videos: [],
+        links: []
+      },
+      {
+        id: "hangman",
+        title: "Hangman (Python + Turtle)",
+        summary: "Educational game that reveals a hangman while players guess country names.",
+        tags: ["Python", "Turtle", "Education"],
+        details: "Shown at the Annual Engineering Expedition; playful introduction to programming concepts.",
+        detailsLong: "• Developed an interactive Hangman game utilizing Python's Turtle graphics, engaging users in guessing country names while visually displaying the hangman <br>• Showcased the project at the Annual Engineering Expedition, highlighting its creativity, interactivity, and use of Python programming alongside Turtle graphics for educational entertainmen",
+        repo: "https://github.com/sweejal/Hangman-Game",
+        images: [],
+        videos: [],
+        links: []
+      },
+      {
+        id: "neuro-nanomaterials",
+        title: "Nanomaterials for Neural Prosthetics (Review)",
+        summary: "Evidence-based review of PEDOT, nano-mesh, and carbon structures for neural interfaces.",
+        tags: ["Research", "Materials", "Bioethics"],
+        details: "Focus on electrochemical transduction, mechanical compliance, long-term biostability, fabrication, and ethics.",
+        detailsLong: "• Compared PEDOT vs. graphene vs. nano-mESH on impedance, charge injection, and chronic stability; discussed ethical frameworks",
+        repo: "#",
+        images: [],
+        videos: [],
+        links: [{label:"Literature Review", href:"https://docs.google.com/document/d/e/2PACX-1vRPEiqB_bbwjADZa7_UIvU4RU1D3iR_OMNjc5yMv3XYx3SPm10rn4jewTNg0jXH-Kl6wVtFqC_K8ga0/pub"}]
+      },
+      {
+        id: "data-dig",
+        title: "The Data Dig (SOC Analysis)",
+        summary: "Blue-team investigation of AWS S3 Honey Bucket logs using Splunk and MISP.",
+        tags: ["Security", "IR", "Splunk", "AWS"],
+        details: "Followed AWS Incident Response Playbook; identified IOCs, TTPs, and recommended remediations; briefed 250+ people.",
+        detailsLong: "• Performed a full SOC analysis of the AWS S3 Honey Bucket Logs dataset using Splunk and MISP and followed the AWS Incident Response Playbook to communicate the findings to 250+ people <br>• Engaged in blue-team activities first hand such as monitoring the event logs, identifying assets in the accident, impact analysis and triage, detecting IOCs, TTPs and threat actors involved, recommending remediations and using a case management system as part of documenting the SOC analysis and incident response efforts",
+        repo: "#",
+        images: [],
+        videos: [],
+        links: []
+      }
+    ];
+
+    function tagPills(tags) {
+      return `<div class="tags">${tags.map(t => `<span class="tag">${t}</span>`).join("")}</div>`;
+    }
+
+    // CARD: only "View details" on main grid (no links/repo)
+    function projectCard(p, i) {
+      return `
+        <article class="card project" aria-labelledby="p${i}">
+          <h3 id="p${i}">${p.title}</h3>
+          <p>${p.summary}</p>
+          ${tagPills(p.tags)}
+          <div class="buttons" style="margin-top:12px">
+            <button class="btn primary" onclick="openModal(${i})">View details</button>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderProjects() {
+      const grid = document.getElementById('projectsGrid');
+      grid.innerHTML = projects.map(projectCard).join('');
+    }
+
+    function renderModalContent(p) {
+      // Title
+      document.getElementById('modalTitle').textContent = p.title;
+
+      // Description
+      const descEl = document.getElementById('modalDesc');
+      const longText = (p.detailsLong && p.detailsLong.trim().length) ? p.detailsLong : p.details;
+      descEl.innerHTML = longText ? `<p>${longText}</p>` : "<p>No additional details yet.</p>";
+
+      // Media row: images (click to fullscreen) + videos (inline playable or iframes) + "Open larger"
+      const mediaEl = document.getElementById('modalMedia');
+      let mediaHtml = "";
+
+      if (Array.isArray(p.images) && p.images.length) {
+        mediaHtml += p.images.map(img => {
+          const src = img.src || img.href;
+          const alt = (img.alt || "").replace(/'/g, "\\'");
+          const safeSrc = (src || "").replace(/'/g, "\\'");
+          return `<button class="thumb" type="button" onclick="openImageViewer('${safeSrc}','${alt}')" aria-label="Open image ${alt ? '('+alt+')' : ''}">
+                    <img src="${src}" alt="${img.alt || ''}" class="thumb" loading="lazy">
+                  </button>`;
+        }).join("");
+      }
+
+      if (Array.isArray(p.videos) && p.videos.length) {
+        mediaHtml += p.videos.map(v => {
+          // Google Drive / YouTube / Vimeo embeds
+          if (v.embed) {
+            const titleAttr = v.title ? `title="${v.title}"` : `title="Embedded video"`;
+            return `
+              <iframe
+                class="thumb"
+                src="${v.embed}"
+                ${titleAttr}
+                allow="autoplay; encrypted-media"
+                allowfullscreen
+                loading="lazy"
+                style="aspect-ratio:16/9; border:0; border-radius:10px;"
+              ></iframe>
+            `;
+          }
+          // Direct MP4 (same-origin preferred)
+          if (v.src) {
+            const type = v.type || "video/mp4";
+            const poster = v.poster ? `poster="${v.poster}"` : "";
+            const safeSrc = (v.src || "").replace(/'/g, "\\'");
+            const safeType = (type || "").replace(/'/g, "\\'");
+            const safeTitle = (p.title + (v.title ? " — " + v.title : "")).replace(/'/g, "\\'");
+            return `
+              <div class="video-thumb">
+                <video class="thumb" controls playsinline preload="metadata" ${poster}>
+                  <source src="${v.src}" type="${type}">
+                  Your browser does not support the video tag.
+                </video>
+                <button class="btn sm" type="button" onclick="openVideoViewer('${safeSrc}','${safeType}','${safeTitle}')">
+                  Open larger
+                </button>
+              </div>
+            `;
+          }
+          return "";
+        }).join("");
+      }
+
+      mediaEl.innerHTML = mediaHtml || `<div class="muted">No media yet.</div>`;
+
+      // Actions row: Report, Slides, Source code (same line, wraps if needed)
+      const linksEl = document.getElementById('modalLinks');
+      const buttons = [];
+      if (Array.isArray(p.links)) {
+        buttons.push(...p.links.map(l => `<a class="btn link" href="${l.href}" target="_blank" rel="noreferrer noopener">${l.label}</a>`));
+      }
+      if (p.repo && p.repo !== '#') {
+        buttons.push(`
+          <a class="btn repo" href="${p.repo}" target="_blank" rel="noreferrer noopener">
+            <svg aria-hidden="true" viewBox="0 0 16 16" class="icon">
+              <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+            </svg>
+            Source code
+          </a>
+        `);
+      }
+      linksEl.innerHTML = buttons.join("") || "";
+    }
+
+    function openModal(index) {
+      const m = document.getElementById('projectModal');
+      const p = projects[index];
+      renderModalContent(p);
+      m.showModal();
+    }
+    function closeModal(){ document.getElementById('projectModal').close(); }
+
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) { e.preventDefault(); target.scrollIntoView({behavior:'smooth'}); }
+      });
+    });
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+    renderProjects();
+
+    // ===== Fullscreen Image Viewer =====
+    const imageViewer = document.getElementById('imageViewer');
+    const viewerImg = document.getElementById('viewerImg');
+    const viewerWrap = document.getElementById('viewerWrap');
+    let currentScale = 1, isDragging = false, startX = 0, startY = 0, offsetX = 0, offsetY = 0;
+
+    function openImageViewer(src, alt = "") {
+      viewerImg.src = src;
+      viewerImg.alt = alt;
+      currentScale = 1; offsetX = 0; offsetY = 0;
+      viewerImg.style.transition = 'transform .05s linear';
+      viewerImg.style.transform = `scale(${currentScale}) translate(0px, 0px)`;
+      imageViewer.showModal();
+    }
+    window.openImageViewer = openImageViewer;
+
+    // Close on click or Esc
+    viewerWrap.addEventListener('click', () => imageViewer.close());
+    imageViewer.addEventListener('cancel', (e) => { e.preventDefault(); imageViewer.close(); });
+
+    // Double-click toggles zoom
+    viewerWrap.addEventListener('dblclick', (e) => {
+      e.preventDefault();
+      currentScale = currentScale === 1 ? 2.5 : 1;
+      offsetX = 0; offsetY = 0;
+      viewerImg.style.transform = `scale(${currentScale}) translate(0px, 0px)`;
+    });
+
+    // Wheel zoom (desktop)
+    imageViewer.addEventListener('wheel', (e) => {
+      if (!imageViewer.open) return;
+      e.preventDefault();
+      const delta = -Math.sign(e.deltaY) * 0.15;
+      currentScale = Math.min(5, Math.max(1, currentScale + delta));
+      viewerImg.style.transform = `scale(${currentScale}) translate(${offsetX/currentScale}px, ${offsetY/currentScale}px)`;
+    }, { passive: false });
+
+    // Drag to pan when zoomed
+    viewerWrap.addEventListener('mousedown', (e) => {
+      if (currentScale === 1) return;
+      isDragging = true;
+      startX = e.clientX - offsetX;
+      startY = e.clientY - offsetY;
+    });
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      offsetX = e.clientX - startX;
+      offsetY = e.clientY - startY;
+      viewerImg.style.transform = `scale(${currentScale}) translate(${offsetX/currentScale}px, ${offsetY/currentScale}px)`;
+    });
+    window.addEventListener('mouseup', () => { isDragging = false; });
+
+    // ===== Video Viewer (for large playback + Fullscreen) =====
+    const videoViewer = document.getElementById('videoViewer');
+    const viewerVideo = document.getElementById('viewerVideo');
+    const videoTitleEl = document.getElementById('videoTitle');
+
+    function openVideoViewer(src, type = "video/mp4", title = "Video") {
+      // reset previous sources
+      viewerVideo.pause();
+      while (viewerVideo.firstChild) viewerVideo.removeChild(viewerVideo.firstChild);
+
+      const source = document.createElement('source');
+      source.src = src;
+      source.type = type;
+      viewerVideo.appendChild(source);
+
+      videoTitleEl.textContent = title;
+      viewerVideo.load();
+      videoViewer.showModal();
+      // try to start playback; ignore autoplay policies
+      viewerVideo.play().catch(() => {});
+    }
+    window.openVideoViewer = openVideoViewer;
+
+    function closeVideo() {
+      viewerVideo.pause();
+      videoViewer.close();
+    }
+    window.closeVideo = closeVideo;
+
+    function fsVideo() {
+      if (viewerVideo.requestFullscreen) viewerVideo.requestFullscreen();
+      else if (viewerVideo.webkitRequestFullscreen) viewerVideo.webkitRequestFullscreen();
+      else if (viewerVideo.msRequestFullscreen) viewerVideo.msRequestFullscreen();
+    }
+    window.fsVideo = fsVideo;
+  </script>
+</body>
+</html>
